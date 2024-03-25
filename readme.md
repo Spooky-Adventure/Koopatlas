@@ -1,8 +1,17 @@
-# Koopatlas ("Koopatlas-Updated" fork)
+# Koopatlas for Spooky Adventure
 
-An editor for world maps for the custom Koopatlas Engine for New Super Mario Bros. Wii, created by Treeki.
+Now presenting... Koopatlas! A special version for the Spooky Adventure mod.
 
-The "Koopatlas-Updated" fork aims to keep Koopatlas compatible with the latest versions of its dependencies, and to fix bugs and make minor improvements. Pull requests that make large changes to how the editor works or add major features will be declined — please make your own fork for that.
+Or... Spookatlas. Just kidding, too many people have used the "-atlas" naming scheme. This isn't even that different compared to
+Koopatlas, all it has is some fixes and tweaks.
+
+This is based on RoadrunnerWMC's [Koopatlas-Updated][kp-upd], a fork of the original editor. The fork aims to keep it compatible with the latest versions of its dependencies, and to fix bugs and make minor improvements.
+
+## Why?
+
+You may be wondering, why does this exist? Well, it turns out that the path to the folder cotaining NewerSMBW's map tilesets is stored directly inside the KPBIN file. That's right, the filepath isn't in Newer's source code, it's inside the map file for some reason. Spooky Adventure uses a different folder for the world map stuff, therefore, a different folder for the world map tilesets. Which means that the game will fail to load tilesets unless they are present at `/Maps/Texture`.
+
+This version will also fix some tiny little bugs that I've found annoying, mainly just windows not being titled correctly, and other stuff as well.
 
 ## Original readme below
 
@@ -33,3 +42,5 @@ the available space, so...*
 If you want to make maps, feel free to try it. Then bash your head against a
 wall when you accidentally close the editor and lose your unsaved work because
 there's no warning against that. Or when it crashes on you, which might happen.
+
+[kp-upd]: https://github.com/RoadrunnerWMC/Koopatlas-Updated

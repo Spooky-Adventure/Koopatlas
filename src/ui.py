@@ -429,6 +429,8 @@ class KPLayerList(QtWidgets.QWidget):
     def addTileLayer(self):
         from dialogs import KPTilesetChooserDialog
 
+        
+
         tilesetName = KPTilesetChooserDialog.run('Choose a tileset for the new layer')
         if tilesetName is None:
             return
@@ -1130,7 +1132,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
         f = mb.addMenu('&File')
         self.fa = f.addAction('New',                        self.newMap, QKeySequence("Ctrl+N"))
         self.fb = f.addAction('Open...',                    self.openMap, QKeySequence("Ctrl+O"))
-        self.fc = f.addAction('Open Recent')                #
+        #self.fc = f.addAction('Open Recent')                # Apparently nobody cared enough to code this feature
         f.addSeparator()
         self.fd = f.addAction('Save',                       self.saveMap, QKeySequence("Ctrl+S"))
         self.fe = f.addAction('Save As...',                 self.saveMapAs, QKeySequence("Ctrl+Shift+S"))
@@ -1177,13 +1179,13 @@ class KPMainWindow(QtWidgets.QMainWindow):
         self.ma = m.addAction('World Editor...',            self.showWorldEditor)
 
         w = mb.addMenu('Window')
-        self.wa = w.addAction('Show Grid',                  self.showGrid, QKeySequence("Ctrl+G"))
+        self.wa = w.addAction('Show Grid (Crashes)',                  self.showGrid, QKeySequence("Ctrl+G"))
         self.wa.setCheckable(True)
         w.addSeparator()
         self.wb = w.addAction('Zoom In',                    self.ZoomIn, QKeySequence.ZoomIn)
         self.wc = w.addAction('Zoom Out',                   self.ZoomOut, QKeySequence.ZoomOut)
         self.wd = w.addAction('Actual Size',                self.ZoomActual, QKeySequence("Ctrl+="))
-        self.wh = w.addAction('Show Wii Zoom',              self.showWiiZoom, QKeySequence("Ctrl+F"))
+        self.wh = w.addAction('Show Wii Zoom (Crashes)',              self.showWiiZoom, QKeySequence("Ctrl+F"))
         self.wh.setCheckable(True)
         w.addSeparator()
 
@@ -1435,7 +1437,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def screenshot(self):
         items = ("Current Window", "Entire Map")
 
-        item, ok = QtWidgets.QInputDialog.getItem(self, "QInputDialog.getItem()",
+        item, ok = QtWidgets.QInputDialog.getItem(self, "Screenshot",
                 "Choose a Screenshot Source:", items, 0, False)
         if ok and item:
             fn = QFileDialog_getSaveFileName(self, 'Choose a new filename', 'untitled.png', 'Portable Network Graphics (*.png)')
@@ -1463,7 +1465,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 
     def exportDoodads(self):
-        fn = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder')
+        fn = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder. All doodads will be saved to this folder.')
         if fn == '': return
         fn = unicode(fn)
 
@@ -1472,7 +1474,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
 
     def batchSave(self):
-        target = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder')
+        target = QtWidgets.QFileDialog.getExistingDirectory(self, 'Choose a folder. All KPMAP files will be exported into KPBIN.')
         if target == '': return
         target = unicode(target)
 
@@ -1545,7 +1547,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
     def moveTilesetToFolder(self):
 
         path = QFileDialog_getOpenFileName(self,
-                "Choose a tileset. Tileset will be copied to the Koopatlas Tilesets Folder.", "",
+                "Choose a tileset. It will be copied to the Koopatlas Tilesets folder.", "",
                 "Koopuzzle Tilesets (*.arc)")
         if path:
             import shutil
@@ -1570,7 +1572,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 
         from dialogs import KPTilesetChooserDialog
 
-        tilesetName = KPTilesetChooserDialog.run('Choose a tileset to change to')
+        tilesetName = KPTilesetChooserDialog.run('Choose a tileset to change to.')
         if tilesetName is None:
             return
 
@@ -1650,7 +1652,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
             return
 
         path = QFileDialog_getSaveFileName(self,
-                "Choose a tileset. Tileset will be copied to the Koopatlas Tilesets Folder.", "KP Preset.kpa",
+                "Save Koopatlas Animation Preset externally", "KP Preset.kpa",
                 "Koopatlas Animation Preset (*.kpa)")
 
         if path:
@@ -1672,7 +1674,7 @@ class KPMainWindow(QtWidgets.QMainWindow):
 ########################
     def setMapBackground(self):
         from dialogs import getTextDialog
-        newBG = getTextDialog('Map Background', 'Enter a path (ex. /Maps/Water.brres):', KP.map.bgName)
+        newBG = getTextDialog('Map Background', 'Enter a path (ex. /World/Object/BG_Water.brres):', KP.map.bgName)
         if newBG is not None:
             KP.map.bgName = newBG
 

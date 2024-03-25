@@ -255,7 +255,7 @@ class KPMapExporter:
                 data += u32.pack(0xFF000000)
 
                 # tileset name
-                tileset = '/Maps/Texture/%s.bin' % layer.tileset
+                tileset = '/World/Texture/%s.bin' % layer.tileset
                 tilesets.add(tileset)
                 stringsToAdd.add(tileset)
                 requiredFixUps.append((len(data), ('tileset', tileset)))

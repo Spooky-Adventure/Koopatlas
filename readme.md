@@ -2,16 +2,17 @@
 
 Now presenting... Koopatlas! A special version for the Spooky Adventure mod.
 
-Or... Spookatlas. Just kidding, too many people have used the "-atlas" naming scheme. This isn't even that different compared to
-Koopatlas, all it has is some fixes and tweaks.
+Or... Spookatlas. Just kidding, the "`-atlas`" naming scheme is done-to-death by now, there's at least like 6 or 7 of them by now. This isn't even different enough to get a new "prefix", all it has is some fixes and tweaks.
 
-This is based on RoadrunnerWMC's [Koopatlas-Updated][kp-upd], a fork of the original editor. The fork aims to keep it compatible with the latest versions of its dependencies, and to fix bugs and make minor improvements.
+This is based on RoadrunnerWMC's [Koopatlas-Updated][kp-upd], a fork of the original editor. That fork aims to keep it compatible with the latest versions of its dependencies, and to fix bugs and make minor improvements.
 
 ## Why?
 
-You may be wondering, why does this exist? Well, it turns out that the path to the folder cotaining NewerSMBW's map tilesets is stored directly inside the KPBIN file. That's right, the filepath isn't in Newer's source code, it's inside the map file for some reason. Spooky Adventure uses a different folder for the world map stuff, therefore, a different folder for the world map tilesets. Which means that the game will fail to load tilesets unless they are present at `/Maps/Texture`.
+You may be wondering, why does this exist? Well, it turns out that the path to the folder containing NewerSMBW's map tilesets is stored directly inside the KPBIN file. That's right, the filepath isn't in Newer's source code, it's inside the map file for some reason.
 
-This version will also fix some tiny little bugs that I've found annoying, mainly just windows not being titled correctly, and other stuff as well.
+Spooky Adventure uses a different folder for the world map stuff, therefore, a different folder for the world map tilesets. Which means that the game will fail to load tilesets unless they are present at `/Maps/Texture`.
+
+This version also fixes some tiny little bugs that I've found annoying, mainly just windows not being titled correctly, and other stuff as well.
 
 ## Original readme below
 

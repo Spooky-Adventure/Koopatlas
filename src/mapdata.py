@@ -449,7 +449,7 @@ class KPDoodadLayer(KPLayer):
 @mapfile.dumpable('node')
 class KPNode(object):
     dump_attribs = (
-            'position', 'actions', 'level', 'hasSecret', 'mapChange',
+            'position', 'actions', 'level', 'hasSecret', 'sign', 'mapChange',
             'transition', 'mapID', 'foreignID', 'worldDefID')
 
     def _dump(self, mapObj, dest):
@@ -467,13 +467,14 @@ class KPNode(object):
         self.level = None
         self.hasSecret = False
         self.mapChange = None
+        self.sign = None
         self.transition = 0
         self.mapID = None
         self.foreignID = None
         self.worldDefID = None
 
     def isStop(self):
-        return True if (self.level or self.mapChange or len(self.exits) != 2) else False
+        return True if (self.level or self.mapChange or self.sign or len(self.exits) != 2) else False
 
 
 @mapfile.dumpable('path')

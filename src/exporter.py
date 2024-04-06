@@ -388,6 +388,11 @@ class KPMapExporter:
                             # i i i b b b b: node type, isNew, Extra pointer, world, level, hasSecret, padding
                             data += struct.pack('>iiibbbb', 2, 0, 0, level1, level2, hasSecret, 0)
 
+                        elif node.sign:
+                            messageID = node.sign
+                            # i i i b b b b: node type, isNew, Extra pointer, message, padding, padding, padding
+                            data += struct.pack('>iiibbbb', 5, 0, 0, messageID, 0, 0, 0)
+
                         elif node.mapChange:
                             data += u32.pack(3) # node type
 

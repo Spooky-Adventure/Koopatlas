@@ -25,9 +25,10 @@ PATH_NODE_STATE_MOVEMENT = 0
 PATH_NODE_STATE_LEVEL = 1
 PATH_NODE_STATE_EXIT = 2
 PATH_NODE_STATE_TRANSITION = 3
+PATH_NODE_STATE_SIGN = 4
 
 FIRST_PATH_NODE_STATE = PATH_NODE_STATE_MOVEMENT
-LAST_PATH_NODE_STATE = PATH_NODE_STATE_TRANSITION
+LAST_PATH_NODE_STATE = PATH_NODE_STATE_SIGN
 
 class KPEditorNode(KPEditorItem):
     SNAP_TO = (12,12)
@@ -43,7 +44,7 @@ class KPEditorNode(KPEditorItem):
             self.setIconSize(QtCore.QSize(24, 24))
             self.setFixedSize(24, 24)
 
-            self.iconList = [KP.icon('Through'), KP.icon('Level'), KP.icon('Exit'), KP.icon('WorldChange')]
+            self.iconList = [KP.icon('Through'), KP.icon('Level'), KP.icon('Exit'), KP.icon('WorldChange'), KP.icon('Sign')]
 
             self.state = initialState
 
@@ -157,6 +158,8 @@ class KPEditorNode(KPEditorItem):
             initialState = PATH_NODE_STATE_EXIT
         elif node.worldDefID is not None:
             initialState = PATH_NODE_STATE_TRANSITION
+        elif node.sign is not None:
+            initialState = PATH_NODE_STATE_SIGN
         else:
             initialState = PATH_NODE_STATE_MOVEMENT
 
@@ -168,6 +171,10 @@ class KPEditorNode(KPEditorItem):
         self.world = self.LevelSlotSpinner()
         self.worldProxy = self.HiddenProxy(self.world)
         self.world.valueChanged.connect(self.worldChange)
+
+        self.sign = self.LevelSlotSpinner()
+        self.messageProxy = self.HiddenProxy(self.sign)
+        self.sign.valueChanged.connect(self.messageChange)
 
         self.stage = self.LevelSlotSpinner()
         self.stageProxy = self.HiddenProxy(self.stage)
@@ -209,6 +216,9 @@ class KPEditorNode(KPEditorItem):
         if node.mapChange is not None:
             self.mapChange.setText(node.mapChange)
 
+        if node.sign is not None:
+            self.sign.setValue(node.sign)
+
         if node.worldDefID is not None:
             self.worldDefID.setValue(node.worldDefID)
 
@@ -225,9 +235,10 @@ class KPEditorNode(KPEditorItem):
             self.scene().addItem(self.worldProxy)
             self.scene().addItem(self.stageProxy)
             self.scene().addItem(self.secretProxy)
+            self.scene().addItem(self.messageProxy)
             self.scene().addItem(self.foreignIDProxy)
-            self.scene().addItem(self.transitionProxy)
             self.scene().addItem(self.mapChangeProxy)
+            self.scene().addItem(self.transitionProxy)
             self.scene().addItem(self.worldDefIDProxy)
 
         return KPEditorItem.itemChange(self, change, value)
@@ -248,15 +259,20 @@ class KPEditorNode(KPEditorItem):
         node.foreignID = None
         node.level = None
         node.worldDefID = None
+        node.sign = None
 
         if state == PATH_NODE_STATE_LEVEL:
             node.level = [1, 1]
             self.world.setValue(node.level[0])
             self.stage.setValue(node.level[1])
 
+        elif state == PATH_NODE_STATE_SIGN:
+            node.sign = 0
+            self.sign.setValue(0)
+
         elif state == PATH_NODE_STATE_EXIT:
-            node.transition = 0
             node.mapChange = '/World/*.kpbin'
+            node.transition = 0
             node.foreignID = 0
 
             usedIDs = []
@@ -296,6 +312,14 @@ class KPEditorNode(KPEditorItem):
         node.level[1] = stage
 
         KP.mainWindow.pathNodeList.update()
+
+
+    def messageChange(self, sign):
+
+       node = self._nodeRef()
+       node.sign = sign
+
+       KP.mainWindow.pathNodeList.update()
 
 
     def secretChange(self, secret):
@@ -350,6 +374,8 @@ class KPEditorNode(KPEditorItem):
             self._boundingRect = QtCore.QRectF(-12, -12, 24, 24)
         elif state == PATH_NODE_STATE_LEVEL:
             self._boundingRect = QtCore.QRectF(-20, -16, 40, 32)
+        elif state == PATH_NODE_STATE_SIGN:
+            self._boundingRect = QtCore.QRectF(-20, -16, 40, 32)
         elif state == PATH_NODE_STATE_EXIT:
             self._boundingRect = QtCore.QRectF(-20, -16, 40, 32)
         elif state == PATH_NODE_STATE_TRANSITION:
@@ -380,6 +406,13 @@ class KPEditorNode(KPEditorItem):
             painter.setBrush(QtGui.QColor(0, 0, 0, 0))
             painter.setPen(QtGui.QColor(0, 0, 0, 0))
             pix = QtGui.QPixmap("Resources/BlackLevel.png")
+            painter.drawPixmap(-pix.width()//2, -pix.height()//2, pix)
+            selectionRect = self._boundingRect.adjusted(1,5,-1,-5)
+
+        elif node.sign is not None:
+            painter.setBrush(QtGui.QColor(0, 0, 0, 0))
+            painter.setPen(QtGui.QColor(0, 0, 0, 0))
+            pix = QtGui.QPixmap("Resources/SignNode.png")
             painter.drawPixmap(-pix.width()//2, -pix.height()//2, pix)
             selectionRect = self._boundingRect.adjusted(1,5,-1,-5)
 
@@ -449,6 +482,12 @@ class KPEditorNode(KPEditorItem):
                 self.stageProxy.hide()
                 self.secretProxy.hide()
 
+            if node.sign is not None:
+                self.showProxyAt(self.messageProxy, -42, 24)
+                
+            else:
+                self.messageProxy.hide()
+            
             if node.mapChange is not None:
                 self.showProxyAt(self.foreignIDProxy, 60, 24)
                 self.showProxyAt(self.transitionProxy, -102, 24)
@@ -469,6 +508,7 @@ class KPEditorNode(KPEditorItem):
             self.worldProxy.hide()
             self.stageProxy.hide()
             self.secretProxy.hide()
+            self.messageProxy.hide()
             self.foreignIDProxy.hide()
             self.transitionProxy.hide()
             self.mapChangeProxy.hide()
@@ -540,6 +580,7 @@ class KPEditorNode(KPEditorItem):
             self.scene().removeItem(self.worldProxy)
             self.scene().removeItem(self.stageProxy)
             self.scene().removeItem(self.secretProxy)
+            self.scene().removeItem(self.messageProxy)
             self.scene().removeItem(self.foreignIDProxy)
             self.scene().removeItem(self.transitionProxy)
             self.scene().removeItem(self.mapChangeProxy)

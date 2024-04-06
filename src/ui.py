@@ -50,6 +50,8 @@ class KPPathNodeList(QtWidgets.QWidget):
                         return KP.icon('BlackLevel')
                     elif node.mapChange is not None:
                         return KP.icon('Exit')
+                    elif node.sign is not None:
+                        return KP.icon('SignNode')
                     elif len(node.exits) != 2:
                         return KP.icon('Stop')
                     else:
@@ -64,6 +66,8 @@ class KPPathNodeList(QtWidgets.QWidget):
 
                     if node.level:
                         return "Level: {0}".format(node.level)
+                    elif node.sign is not None:
+                        return "Sign: ID {0}".format(node.sign)
                     elif node.mapChange is not None:
                         return "Exit: World {0}, entrance {1}".format(node.mapID, node.foreignID)
                     elif len(node.exits) == 3:

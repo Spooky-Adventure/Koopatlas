@@ -1,3 +1,6 @@
 *.pyc
 
+*.kpmap
+*.kpbin
+
 __pycache__
